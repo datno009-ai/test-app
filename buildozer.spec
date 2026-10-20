@@ -12,3 +12,4 @@ requirements = python3,kivy
 orientation = portrait
 fullscreen = 0
 android.permissions = INTERNET
+android.gradle_version = 7.4.2
