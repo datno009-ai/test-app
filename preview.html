@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gecko Browser — UI Preview</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0e14;--panel:#121722;--panel2:#1a2130;--border:#252e40;--text:#e9eef8;--muted:#8995aa;--accent:#7c9cff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font:14px Inter,"Segoe UI",Arial,sans-serif;display:flex;flex-direction:column}
+button,input{font:inherit}button{cursor:pointer;color:inherit;background:transparent;border:1px solid transparent;transition:.18s}button:hover{background:var(--panel2);border-color:var(--border)}
+.toolbar{display:flex;align-items:center;gap:6px;padding:10px 12px;background:#0f131c;border-bottom:1px solid var(--border)}.ib{width:31px;height:31px;flex:0 0 31px;border-radius:9px;display:grid;place-items:center;font-size:16px}
+.address{height:35px;min-width:0;flex:1;display:flex;align-items:center;gap:8px;padding:0 10px;border-radius:11px;background:#1a2030;border:1px solid #293249}.address:focus-within{border-color:var(--accent);box-shadow:0 0 0 2px #7c9cff20}#url{flex:1;min-width:0;color:var(--text);border:0;outline:0;background:transparent;font-size:13px}#url::selection{background:#7897ff;color:#07101f}.lock{color:#8d9bb5}
+.tabs{display:flex;gap:6px;align-items:center;padding:7px 12px;background:#0d1119;border-bottom:1px solid var(--border)}.tab{padding:7px 12px;border-radius:8px;background:#222b3d;border:1px solid #34415a;font-size:12px}
+main{width:min(700px,100%);margin:auto;padding:44px 22px 60px}.hero{text-align:center;margin-bottom:28px}.logo{width:64px;height:64px;margin:0 auto 18px;border:1px solid #35415c;border-radius:21px;display:grid;place-items:center;background:linear-gradient(145deg,#202c45,#111723);font-size:29px;box-shadow:0 10px 40px #0005}h1{margin:0 0 10px;font-size:clamp(24px,5vw,32px);letter-spacing:-1px}.sub{color:var(--muted)}
+.search{height:51px;display:flex;align-items:center;gap:10px;padding:6px 7px 6px 15px;border:1px solid var(--border);border-radius:15px;background:var(--panel)}.search:focus-within{border-color:#465b8d}#q{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--text)}#q::placeholder{color:#78849a}.go{width:37px;height:37px;border-radius:11px;background:var(--accent);color:#081020;font-size:18px;font-weight:700}
+.heading{margin:30px 0 13px;color:#aab5c8;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}.shortcuts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.shortcut{padding:15px 5px 13px;border:1px solid var(--border);border-radius:14px;background:#111722}.si{width:40px;height:40px;margin:0 auto 9px;border-radius:12px;display:grid;place-items:center;background:#202a3b;font-size:20px}.sn{display:block;font-size:12px}
+.recent{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.item{display:flex;align-items:center;gap:11px;padding:12px;text-align:left;border:1px solid var(--border);border-radius:12px;background:#10151f}.ri{width:35px;height:35px;display:grid;place-items:center;border-radius:10px;background:#202a3b;font-size:17px;flex-shrink:0}.name{font-size:12px;margin-bottom:4px}.domain{font-size:11px;color:var(--muted)}footer{padding:14px;text-align:center;color:#566177;font-size:11px}
+@media(max-width:520px){.toolbar{gap:3px;padding:8px}.ib{width:28px;flex-basis:28px;height:30px}.address{gap:5px;padding:0 7px}#url{font-size:12px}main{padding:36px 14px 45px}.shortcuts{gap:7px}.si{width:35px;height:35px}.recent{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="toolbar">
+<button class="ib" title="Quay lại" onclick="history.back()">←</button><button class="ib" title="Tiến lên" onclick="history.forward()">→</button><button class="ib" title="Tải lại" onclick="location.reload()">↻</button><button class="ib" title="Trang chủ" onclick="home()">⌂</button>
+<div class="address"><span class="lock">◈</span><input id="url" value="gecko://home" aria-label="Thanh địa chỉ" autocomplete="off" spellcheck="false"><button class="ib" title="Mở" onclick="goUrl()">↵</button></div>
+<button class="ib" id="bookmark" title="Dấu trang" onclick="this.textContent=this.textContent==='☆'?'★':'☆'">☆</button><button class="ib" title="Tab mới" onclick="newTab()">＋</button><button class="ib" title="Menu" onclick="alert('Menu xem thử: Tab mới · Dấu trang · Lịch sử · Cài đặt')">⋮</button>
+</header>
+<div class="tabs"><div class="tab">🌐 &nbsp; Trang chủ</div><button class="ib" title="Tab mới" onclick="newTab()">＋</button></div>
+<main>
+<section class="hero"><div class="logo">🌐</div><h1>Chào mừng bạn</h1><div class="sub">Một không gian duyệt web riêng dành cho bạn.</div></section>
+<form class="search" onsubmit="search(event)"><span style="font-size:18px;color:var(--muted)">⌕</span><input id="q" placeholder="Tìm kiếm hoặc nhập địa chỉ web..." autocomplete="off"><button class="go">→</button></form>
+<div class="heading">Truy cập nhanh</div><section class="shortcuts">
+<button class="shortcut" onclick="openSite('https://google.com')"><span class="si">🔎</span><span class="sn">Google</span></button>
+<button class="shortcut" onclick="openSite('https://youtube.com')"><span class="si">▶️</span><span class="sn">YouTube</span></button>
+<button class="shortcut" onclick="openSite('https://github.com')"><span class="si">🐙</span><span class="sn">GitHub</span></button>
+<button class="shortcut" onclick="openSite('https://wikipedia.org')"><span class="si">📚</span><span class="sn">Wikipedia</span></button>
+</section>
+<div class="heading">Khám phá</div><section class="recent">
+<button class="item" onclick="openSite('https://developer.mozilla.org')"><span class="ri">🧩</span><span><div class="name">MDN Web Docs</div><div class="domain">developer.mozilla.org</div></span></button>
+<button class="item" onclick="openSite('https://wikipedia.org')"><span class="ri">🌍</span><span><div class="name">Wikipedia</div><div class="domain">wikipedia.org</div></span></button>
+</section>
+</main><footer>Giao diện xem thử · Gecko Browser</footer>
+<script>
+const url=document.getElementById('url');
+url.addEventListener('focus',()=>url.select());url.addEventListener('click',()=>url.select());url.addEventListener('keydown',e=>{if(e.key==='Enter')goUrl()});
+function normalize(s){s=s.trim();if(!s)return'';if(/^https?:\/\//i.test(s))return s;if(/^(localhost|[\w-]+\.)+[\w-]+(:\d+)?(\/.*)?$/i.test(s)&&!s.includes(' '))return'https://'+s;return'https://www.google.com/search?q='+encodeURIComponent(s)}
+function goUrl(){let u=normalize(url.value);if(u)window.open(u,'_blank','noopener')}
+function openSite(u){url.value=u;window.open(u,'_blank','noopener')}
+function search(e){e.preventDefault();let u=normalize(document.getElementById('q').value);if(u){url.value=u;window.open(u,'_blank','noopener')}}
+function home(){url.value='gecko://home';document.getElementById('q').focus()}
+function newTab(){url.value='';url.focus()}
+</script>
+</body></html>
